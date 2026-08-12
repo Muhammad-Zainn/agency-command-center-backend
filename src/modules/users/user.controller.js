@@ -8,23 +8,20 @@ exports.createUser = async (req, res, next) => {
   try {
     const { fullName, email, password, role, clientCompanyName } = req.body;
 
-    // 1. Ensure the email isn't already taken
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ error: "Email already in use." });
     }
 
-    // 2. Hash their password
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
 
-    // 3. Create the user and lock them to the Agency's Tenant ID!
     const user = await User.create({
-      tenantId: req.tenantId, // Attached by the Iron Wall middleware
+      tenantId: req.tenantId,
       fullName,
       email,
       passwordHash,
-      role: role || "client", // Default to client if no role is provided
+      role: role || "client",
       clientCompanyName,
     });
 
@@ -48,8 +45,6 @@ exports.createUser = async (req, res, next) => {
 // @access  Private
 exports.getUsers = async (req, res, next) => {
   try {
-    // Find ONLY the users glued to this specific agency
-    // .select('-passwordHash') ensures we don't accidentally send passwords back!
     const users = await User.find({ tenantId: req.tenantId }).select(
       "-passwordHash",
     );

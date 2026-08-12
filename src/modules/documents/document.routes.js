@@ -5,11 +5,9 @@ const requireTenant = require("../../shared/middleware/requireTenant");
 
 const router = express.Router();
 
-// Secure these routes
 router.use(requireAuth);
 router.use(requireTenant);
 
-// Define the endpoint
 router.post("/generate-proposal", generateProposal);
 
 module.exports = router;

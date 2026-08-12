@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-// 1. Define the Schema (The Blueprint)
 const tenantSchema = new mongoose.Schema(
   {
     name: {
@@ -21,5 +20,4 @@ const tenantSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-// 2. Export the Model so other files can use it
 module.exports = mongoose.model("Tenant", tenantSchema);

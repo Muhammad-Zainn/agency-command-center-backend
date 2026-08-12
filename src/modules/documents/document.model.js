@@ -2,13 +2,11 @@ const mongoose = require("mongoose");
 
 const documentSchema = new mongoose.Schema(
   {
-    // ⭐️ Multi-Tenant Rule: Ties this document to a specific Agency
     tenantId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Tenant",
       required: true,
     },
-    // The One-to-Many Relationship: Which project does this belong to?
     projectId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Project",
@@ -24,15 +22,13 @@ const documentSchema = new mongoose.Schema(
       required: true,
     },
     totalAmount: {
-      type: Number, // Primarily used if type is 'invoice' or 'proposal'
+      type: Number, 
     },
 
     customContent: {
       type: Object,
       default: {},
     },
-
-    // The link to AWS S3 / Cloud Storage
     pdfFileUrl: {
       type: String,
     },

@@ -9,13 +9,11 @@ exports.getDashboardStats = async (req, res, next) => {
   try {
     const tenantId = req.tenantId;
 
-    // 1. Fetch all projects for this agency
     const projects = await Project.find({ tenantId }).populate(
       "clientId",
       "fullName email clientCompanyName",
     );
 
-    // 2. Calculate Total Earnings (sum of budgets for completed projects or all projects)
     const totalPotentialRevenue = projects.reduce(
       (sum, p) => sum + (p.budget || 0),
       0,
@@ -27,7 +25,6 @@ exports.getDashboardStats = async (req, res, next) => {
       0,
     );
 
-    // 3. Categorize Projects by Status
     const statusBreakdown = {
       planning: projects.filter((p) => p.status === "planning").length,
       in_progress: projects.filter((p) => p.status === "in_progress").length,
@@ -37,7 +34,6 @@ exports.getDashboardStats = async (req, res, next) => {
       total: projects.length,
     };
 
-    // 4. Fetch Clients and map their active projects/spend
     const clients = await User.find({ tenantId, role: "client" }).select(
       "-passwordHash",
     );
