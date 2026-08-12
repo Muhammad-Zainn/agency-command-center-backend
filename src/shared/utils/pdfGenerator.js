@@ -18,7 +18,6 @@ exports.generatePDF = async (templateName, data) => {
     if (!fs.existsSync(outputDir)) {
       fs.mkdirSync(outputDir, { recursive: true });
     }
-  ]
     const fileName = `${templateName}-${Date.now()}.pdf`;
     const outputPath = path.join(outputDir, fileName);
 
